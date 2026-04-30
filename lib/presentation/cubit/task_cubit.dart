@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:task_tracker/data/models/task_model.dart';
+import 'package:task_tracker/helpers/ui_helpers.dart';
 
 class TaskCubit extends Cubit<List<TaskModel>> {
   TaskCubit() : super([]) {
@@ -13,18 +14,9 @@ class TaskCubit extends Cubit<List<TaskModel>> {
 
   String searchQuery = "";
 
-  int getPriorityValue(String priority) {
-    switch (priority) {
-      case "High":
-        return 3;
-      case "Medium":
-        return 2;
-      case "Low":
-        return 1;
-      default:
-        return 0;
-    }
-  }
+  List<TaskModel> get activeTasks => state.where((t) => !t.isDone).toList();
+
+  List<TaskModel> get completedTasks => state.where((t) => t.isDone).toList();
 
   void loadTasks() {
     var tasks = box.values.toList();
@@ -87,21 +79,21 @@ class TaskCubit extends Cubit<List<TaskModel>> {
     loadTasks();
   }
 
-  // void toggleTask(TaskModel task) {
-  //   task.isDone = !task.isDone;
-  //   task.save();
-  //   loadTasks();
-  // }
-
-  void toggleTask(int index) {
-    final task = box.getAt(index);
-
-    if (task != null) {
-      task.isDone = !task.isDone;
-      task.save();
-      loadTasks();
-    }
+  void toggleTask(TaskModel task) {
+    task.isDone = !task.isDone;
+    task.save();
+    loadTasks();
   }
+
+  // void toggleTask(int index) {
+  //   final task = box.getAt(index);
+
+  //   if (task != null) {
+  //     task.isDone = !task.isDone;
+  //     task.save();
+  //     loadTasks();
+  //   }
+  // }
 
   void completeTask(TaskModel task) {
     task.isDone = true;
