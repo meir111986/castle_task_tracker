@@ -85,42 +85,79 @@ class TaskDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      task.title,
-                      style: const TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
+            // Card(
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(16),
+            //     child: Column(
+            //       crossAxisAlignment: CrossAxisAlignment.start,
+            //       children: [
+            //         Text(
+            //           task.title,
+            //           style: const TextStyle(
+            //             fontSize: 22,
+            //             fontWeight: FontWeight.bold,
+            //           ),
+            //         ),
+
+            //         const SizedBox(height: 12),
+
+            //         Text(
+            //           task.description.isEmpty
+            //               ? "Описание отсутствует"
+            //               : task.description,
+            //         ),
+
+            //         const Divider(height: 32),
+
+            //         Text("Приоритет: ${task.priority}"),
+            //         Text("Категория: ${task.category}"),
+            //         Text("Дедлайн: ${task.deadline.toString().split(' ')[0]}"),
+            //         Text(
+            //           "Статус: ${task.isDone ? 'Выполнена' : 'Не выполнена'}",
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            Hero(
+              tag: 'task_${task.key}',
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        task.title,
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
 
-                    const SizedBox(height: 12),
+                      const SizedBox(height: 12),
 
-                    Text(
-                      task.description.isEmpty
-                          ? "Описание отсутствует"
-                          : task.description,
-                    ),
+                      Text(
+                        task.description.isEmpty
+                            ? "Описание отсутствует"
+                            : task.description,
+                      ),
 
-                    const Divider(height: 32),
+                      const Divider(height: 32),
 
-                    Text("Приоритет: ${task.priority}"),
-                    Text("Категория: ${task.category}"),
-                    Text("Дедлайн: ${task.deadline.toString().split(' ')[0]}"),
-                    Text(
-                      "Статус: ${task.isDone ? 'Выполнена' : 'Не выполнена'}",
-                    ),
-                  ],
+                      Text("Приоритет: ${task.priority}"),
+                      Text("Категория: ${task.category}"),
+                      Text(
+                        "Дедлайн: ${task.deadline.toString().split('.')[0]}",
+                      ),
+                      Text(
+                        "Статус: ${task.isDone ? 'Выполнена' : 'Не выполнена'}",
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
-
-            const SizedBox(height: 24),
 
             const SizedBox(height: 12),
 

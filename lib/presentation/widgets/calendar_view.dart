@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:task_tracker/data/models/task_model.dart';
+import 'package:task_tracker/helpers/ui_helpers.dart';
 import 'package:task_tracker/presentation/cubit/task_cubit.dart';
 import 'package:task_tracker/presentation/screens/task_detail_screen.dart';
 
@@ -24,19 +25,6 @@ class _CalendarViewState extends State<CalendarView> {
     }).toList();
   }
 
-  Color getPriorityColor(String priority) {
-    switch (priority) {
-      case "High":
-        return Colors.red;
-      case "Medium":
-        return Colors.orange;
-      case "Low":
-        return Colors.green;
-      default:
-        return Colors.grey;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<TaskCubit, List>(
@@ -45,30 +33,6 @@ class _CalendarViewState extends State<CalendarView> {
 
         return Column(
           children: [
-            // TableCalendar(
-            //   firstDay: DateTime.utc(2020),
-            //   lastDay: DateTime.utc(2100),
-            //   focusedDay: focusedDay,
-            //   selectedDayPredicate: (day) => isSameDay(selectedDay, day),
-
-            //   onDaySelected: (selected, focused) {
-            //     setState(() {
-            //       selectedDay = selected;
-            //       focusedDay = focused;
-            //     });
-            //   },
-
-            //   calendarStyle: const CalendarStyle(
-            //     todayDecoration: BoxDecoration(
-            //       color: Colors.blue,
-            //       shape: BoxShape.circle,
-            //     ),
-            //     selectedDecoration: BoxDecoration(
-            //       color: Colors.deepPurple,
-            //       shape: BoxShape.circle,
-            //     ),
-            //   ),
-            // ),
             TableCalendar(
               firstDay: DateTime.utc(2020),
               lastDay: DateTime.utc(2100),
@@ -83,12 +47,10 @@ class _CalendarViewState extends State<CalendarView> {
                 });
               },
 
-              // 👇 ВОТ СЮДА
               eventLoader: (day) {
                 return getTasksForDay(tasks, day);
               },
 
-              // 👇 И СЮДА
               calendarBuilders: CalendarBuilders(
                 markerBuilder: (context, date, events) {
                   if (events.isEmpty) return null;
@@ -141,7 +103,6 @@ class _CalendarViewState extends State<CalendarView> {
                               "${task.deadline.hour.toString().padLeft(2, '0')}:${task.deadline.minute.toString().padLeft(2, '0')}",
                             ),
 
-                            // 👇 ВОТ ЭТО ДОБАВЬ
                             onTap: () {
                               Navigator.push(
                                 context,
