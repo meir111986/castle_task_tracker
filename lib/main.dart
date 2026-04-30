@@ -4,7 +4,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:task_tracker/data/models/task_model.dart';
 import 'package:task_tracker/notification_service.dart';
 import 'package:task_tracker/presentation/cubit/task_cubit.dart';
-import 'package:task_tracker/presentation/screens/home_screen.dart';
 import 'package:task_tracker/presentation/screens/main_screen.dart';
 
 void main() async {

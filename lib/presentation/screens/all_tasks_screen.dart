@@ -32,12 +32,7 @@ class AllTasksScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final task = tasks[index];
 
-                    return
-                    // ListTile(
-                    //   title: Text(task.title),
-                    //   subtitle: Text(task.category),
-                    // );
-                    Card(
+                    return Card(
                       margin: const EdgeInsets.symmetric(
                         horizontal: 12,
                         vertical: 6,

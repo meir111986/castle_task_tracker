@@ -38,7 +38,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
       title: 'Task Reminder',
       body: titleController.text,
-      scheduledDate: DateTime.now().add(const Duration(seconds: 10)),
+      scheduledDate: deadline,
+      // scheduledDate: DateTime.now().add(const Duration(seconds: 10)),
     );
 
     if (!mounted) return;
@@ -50,6 +51,53 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     ).showSnackBar(const SnackBar(content: Text("Задача добавлена")));
 
     Navigator.pop(context);
+  }
+
+  Future<void> pickDateTime() async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: deadline,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate == null) return;
+
+    final pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(deadline),
+    );
+
+    if (pickedTime == null) return;
+
+    setState(() {
+      deadline = DateTime(
+        pickedDate.year,
+        pickedDate.month,
+        pickedDate.day,
+        pickedTime.hour,
+        pickedTime.minute,
+      );
+    });
+  }
+
+  Future<void> pickTime() async {
+    final pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(deadline),
+    );
+
+    if (pickedTime != null) {
+      setState(() {
+        deadline = DateTime(
+          deadline.year,
+          deadline.month,
+          deadline.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
+      });
+    }
   }
 
   @override
@@ -74,14 +122,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 decoration: InputDecoration(labelText: "Описание"),
               ),
 
-              // DropdownButtonFormField(
-              //   value: priority,
-              //   items: ["Low", "Medium", "High"]
-              //       .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-              //       .toList(),
-              //   onChanged: (v) => setState(() => priority = v!),
-              //   decoration: InputDecoration(labelText: "Приоритет"),
-              // ),
               const SizedBox(height: 20),
 
               // 🔴 Приоритет
@@ -105,7 +145,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               const SizedBox(height: 16),
 
-              // 🟢 Категория
+              //  Категория
               DropdownButtonFormField<String>(
                 value: category,
                 decoration: InputDecoration(
@@ -126,22 +166,40 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               SizedBox(height: 20),
 
-              ElevatedButton(
-                onPressed: () async {
-                  final picked = await showDatePicker(
-                    context: context,
-                    initialDate: deadline,
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime(2100),
-                  );
+              // ElevatedButton(
+              //   onPressed: () async {
+              //     final picked = await showDatePicker(
+              //       context: context,
+              //       initialDate: deadline,
+              //       firstDate: DateTime.now(),
+              //       lastDate: DateTime(2100),
+              //     );
 
-                  if (picked != null) {
-                    setState(() {
-                      deadline = picked;
-                    });
-                  }
-                },
-                child: Text("Выбрать дедлайн"),
+              //     if (picked != null) {
+              //       setState(() {
+              //         deadline = picked;
+              //       });
+              //     }
+              //   },
+              //   child: Text("Выбрать дедлайн"),
+              // ),
+
+              // const SizedBox(height: 12),
+
+              // ElevatedButton(
+              //   onPressed: pickTime,
+              //   child: Text(
+              //     "Выбрать время: ${deadline.hour.toString().padLeft(2, '0')}:${deadline.minute.toString().padLeft(2, '0')}",
+              //   ),
+              // ),
+              Card(
+                child: ListTile(
+                  leading: const Icon(Icons.calendar_today),
+                  title: const Text("Дедлайн"),
+                  subtitle: Text("${deadline.toLocal()}".split('.')[0]),
+                  trailing: const Icon(Icons.edit),
+                  onTap: pickDateTime,
+                ),
               ),
 
               SizedBox(height: 20),

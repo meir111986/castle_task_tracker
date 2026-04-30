@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_tracker/data/models/task_model.dart';
+import 'package:task_tracker/notification_service.dart';
 import 'package:task_tracker/presentation/cubit/task_cubit.dart';
 
 class EditTaskScreen extends StatefulWidget {
@@ -49,8 +50,82 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     }
   }
 
-  void updateTask() {
+  Future<void> pickDateTime() async {
+    final pickedDate = await showDatePicker(
+      context: context,
+      initialDate: deadline,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate == null) return;
+
+    final pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(deadline),
+    );
+
+    if (pickedTime == null) return;
+
+    setState(() {
+      deadline = DateTime(
+        pickedDate.year,
+        pickedDate.month,
+        pickedDate.day,
+        pickedTime.hour,
+        pickedTime.minute,
+      );
+    });
+  }
+
+  // Future<void> pickTime() async {
+  //   final pickedTime = await showTimePicker(
+  //     context: context,
+  //     initialTime: TimeOfDay.fromDateTime(deadline),
+  //   );
+
+  //   if (pickedTime != null) {
+  //     setState(() {
+  //       deadline = DateTime(
+  //         deadline.year,
+  //         deadline.month,
+  //         deadline.day,
+  //         pickedTime.hour,
+  //         pickedTime.minute,
+  //       );
+  //     });
+  //   }
+  // }
+
+  // void updateTask() {
+  //   if (!formKey.currentState!.validate()) return;
+
+  //   widget.task.title = titleController.text.trim();
+  //   widget.task.description = descController.text.trim();
+  //   widget.task.priority = priority;
+  //   widget.task.category = category;
+  //   widget.task.deadline = deadline;
+
+  //   context.read<TaskCubit>().updateTask(widget.task);
+
+  //   Navigator.pop(context);
+  //   Navigator.pop(context);
+
+  //   ScaffoldMessenger.of(
+  //     context,
+  //   ).showSnackBar(const SnackBar(content: Text("Задача изменена")));
+  // }
+
+  Future<void> updateTask() async {
     if (!formKey.currentState!.validate()) return;
+
+    // отменяем старое уведомление
+    // if (widget.task.key != null) {
+    //   await NotificationService.cancelNotification(widget.task.key);
+    // }
+    if (widget.task.key is int) {
+      await NotificationService.cancelNotification(widget.task.key as int);
+    }
 
     widget.task.title = titleController.text.trim();
     widget.task.description = descController.text.trim();
@@ -60,12 +135,22 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
 
     context.read<TaskCubit>().updateTask(widget.task);
 
+    // ставим новое уведомление
+    await NotificationService.scheduleNotification(
+      id: widget.task.key ?? DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      title: 'Task Reminder',
+      body: widget.task.title,
+      scheduledDate: deadline,
+    );
+
+    if (!mounted) return;
+
     Navigator.pop(context);
     Navigator.pop(context);
 
     ScaffoldMessenger.of(
       context,
-    ).showSnackBar(const SnackBar(content: Text("Задача изменена")));
+    ).showSnackBar(const SnackBar(content: Text("Задача обновлена")));
   }
 
   @override
@@ -152,18 +237,35 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
 
               const SizedBox(height: 16),
 
+              // Card(
+              //   child: ListTile(
+              //     leading: const Icon(Icons.calendar_today),
+              //     title: const Text("Дедлайн"),
+              //     subtitle: Text(deadline.toString().split(" ")[0]),
+              //     trailing: TextButton(
+              //       onPressed: pickDate,
+              //       child: const Text("Выбрать"),
+              //     ),
+              //   ),
+              // ),
               Card(
                 child: ListTile(
                   leading: const Icon(Icons.calendar_today),
                   title: const Text("Дедлайн"),
-                  subtitle: Text(deadline.toString().split(" ")[0]),
-                  trailing: TextButton(
-                    onPressed: pickDate,
-                    child: const Text("Выбрать"),
-                  ),
+                  subtitle: Text("${deadline.toLocal()}".split('.')[0]),
+                  trailing: const Icon(Icons.edit),
+                  onTap: pickDateTime,
                 ),
               ),
 
+              const SizedBox(height: 12),
+
+              // ElevatedButton(
+              //   onPressed: pickTime,
+              //   child: Text(
+              //     "Выбрать время: ${deadline.hour.toString().padLeft(2, '0')}:${deadline.minute.toString().padLeft(2, '0')}",
+              //   ),
+              // ),
               const SizedBox(height: 24),
 
               ElevatedButton.icon(

@@ -22,6 +22,9 @@ class TaskModel extends HiveObject {
   @HiveField(5)
   bool isDone;
 
+  @HiveField(6)
+  int? notificationId;
+
   TaskModel({
     required this.title,
     required this.description,

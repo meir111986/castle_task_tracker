@@ -122,16 +122,6 @@ class TaskDetailScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // ElevatedButton.icon(
-            //   icon: const Icon(Icons.edit),
-            //   label: const Text("Изменить"),
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(builder: (_) => EditTaskScreen(task: task)),
-            //     );
-            //   },
-            // ),
             const SizedBox(height: 12),
 
             ElevatedButton.icon(
@@ -171,34 +161,6 @@ class TaskDetailScreen extends StatelessWidget {
             ),
 
             const SizedBox(height: 12),
-
-            // ElevatedButton.icon(
-            //   icon: const Icon(Icons.delete),
-            //   label: const Text("Удалить"),
-            //   style: ElevatedButton.styleFrom(
-            //     backgroundColor: Colors.red,
-            //     foregroundColor: Colors.white,
-            //   ),
-            //   onPressed: () async {
-            //     final confirmed = await confirmDialog(
-            //       context,
-            //       title: "Удаление задачи",
-            //       content: "Действительно хотите удалить эту задачу?",
-            //     );
-
-            //     if (!confirmed) return;
-
-            //     context.read<TaskCubit>().deleteTask(task);
-
-            //     if (!context.mounted) return;
-
-            //     Navigator.pop(context);
-
-            //     ScaffoldMessenger.of(
-            //       context,
-            //     ).showSnackBar(const SnackBar(content: Text("Задача удалена")));
-            //   },
-            // ),
           ],
         ),
       ),

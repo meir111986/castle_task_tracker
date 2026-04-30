@@ -38,14 +38,52 @@ class NotificationService {
         ?.requestNotificationsPermission();
   }
 
+  // static Future<void> scheduleNotification({
+  //   required int id,
+  //   required String title,
+  //   required String body,
+  //   required DateTime scheduledDate,
+  // }) async {
+  //   final delay = scheduledDate.difference(DateTime.now());
+
+  //   print("DELAY: ${delay.inSeconds} seconds");
+
+  //   if (delay.isNegative) {
+  //     print("Дата уже прошла");
+  //     return;
+  //   }
+
+  //   Future.delayed(delay, () async {
+  //     print("SHOW DELAYED NOTIFICATION");
+
+  //     await notifications.show(
+  //       id: id,
+  //       title: title,
+  //       body: body,
+  //       notificationDetails: const NotificationDetails(
+  //         android: AndroidNotificationDetails(
+  //           'task_channel',
+  //           'Tasks',
+  //           channelDescription: 'Task reminders',
+  //           importance: Importance.max,
+  //           priority: Priority.high,
+  //         ),
+  //       ),
+  //     );
+  //   });
+  // }
+
   static Future<void> scheduleNotification({
     required int id,
     required String title,
     required String body,
     required DateTime scheduledDate,
   }) async {
-    final delay = scheduledDate.difference(DateTime.now());
+    final now = DateTime.now();
+    final delay = scheduledDate.difference(now);
 
+    print("NOW: $now");
+    print("SCHEDULED: $scheduledDate");
     print("DELAY: ${delay.inSeconds} seconds");
 
     if (delay.isNegative) {
@@ -53,7 +91,10 @@ class NotificationService {
       return;
     }
 
-    Future.delayed(delay, () async {
+    // защита от 0 секунд
+    final safeDelay = delay.inSeconds < 1 ? const Duration(seconds: 1) : delay;
+
+    Future.delayed(safeDelay, () async {
       print("SHOW DELAYED NOTIFICATION");
 
       await notifications.show(
@@ -88,5 +129,9 @@ class NotificationService {
         ),
       ),
     );
+  }
+
+  static Future<void> cancelNotification(int id) async {
+    await notifications.cancel(id: id);
   }
 }
