@@ -32,6 +32,15 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
     context.read<TaskCubit>().addTask(task);
 
+    // await NotificationService.showNow();
+
+    await NotificationService.scheduleNotification(
+      id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      title: 'Task Reminder',
+      body: titleController.text,
+      scheduledDate: DateTime.now().add(const Duration(seconds: 10)),
+    );
+
     if (!mounted) return;
 
     print(2);
@@ -65,13 +74,54 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                 decoration: InputDecoration(labelText: "Описание"),
               ),
 
-              DropdownButtonFormField(
+              // DropdownButtonFormField(
+              //   value: priority,
+              //   items: ["Low", "Medium", "High"]
+              //       .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+              //       .toList(),
+              //   onChanged: (v) => setState(() => priority = v!),
+              //   decoration: InputDecoration(labelText: "Приоритет"),
+              // ),
+              const SizedBox(height: 20),
+
+              // 🔴 Приоритет
+              DropdownButtonFormField<String>(
                 value: priority,
+                decoration: InputDecoration(
+                  labelText: "Приоритет",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
                 items: ["Low", "Medium", "High"]
                     .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                     .toList(),
-                onChanged: (v) => setState(() => priority = v!),
-                decoration: InputDecoration(labelText: "Приоритет"),
+                onChanged: (v) {
+                  if (v != null) {
+                    setState(() => priority = v);
+                  }
+                },
+              ),
+
+              const SizedBox(height: 16),
+
+              // 🟢 Категория
+              DropdownButtonFormField<String>(
+                value: category,
+                decoration: InputDecoration(
+                  labelText: "Категория",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                items: ["Work", "Personal"]
+                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                    .toList(),
+                onChanged: (v) {
+                  if (v != null) {
+                    setState(() => category = v);
+                  }
+                },
               ),
 
               SizedBox(height: 20),
@@ -96,21 +146,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               SizedBox(height: 20),
 
-              // ElevatedButton(
-              //   onPressed: () async {
-              //     print("CLICK TEST");
-
-              //     await NotificationService.scheduleNotification(
-              //       id: 999,
-              //       title: 'TEST',
-              //       body: 'Работает',
-              //       scheduledDate: DateTime.now().add(
-              //         const Duration(seconds: 5),
-              //       ),
-              //     );
-              //   },
-              //   child: const Text("TEST NOTIFICATION"),
-              // ),
               ElevatedButton(
                 onPressed: () async {
                   print("CLICK TEST");

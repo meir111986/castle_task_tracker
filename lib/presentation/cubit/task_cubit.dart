@@ -8,9 +8,31 @@ class TaskCubit extends Cubit<List<TaskModel>> {
   }
 
   final box = Hive.box<TaskModel>('tasks');
+  String selectedCategory = "All";
+  String sortType = "None";
+
+  String searchQuery = "";
 
   void loadTasks() {
     var tasks = box.values.toList();
+
+    if (searchQuery.isNotEmpty) {
+      tasks = tasks
+          .where(
+            (t) => t.title.toLowerCase().contains(searchQuery.toLowerCase()),
+          )
+          .toList();
+    }
+
+    if (selectedCategory != "All") {
+      tasks = tasks.where((t) => t.category == selectedCategory).toList();
+    }
+
+    if (sortType == "Priority") {
+      tasks.sort((a, b) => b.priority.compareTo(a.priority));
+    } else if (sortType == "Date") {
+      tasks.sort((a, b) => a.deadline.compareTo(b.deadline));
+    }
 
     emit(tasks);
   }
@@ -32,6 +54,21 @@ class TaskCubit extends Cubit<List<TaskModel>> {
 
   void deleteTask(int index) {
     box.deleteAt(index);
+    loadTasks();
+  }
+
+  void setCategory(String category) {
+    selectedCategory = category;
+    loadTasks();
+  }
+
+  void setSort(String sort) {
+    sortType = sort;
+    loadTasks();
+  }
+
+  void search(String query) {
+    searchQuery = query;
     loadTasks();
   }
 }
