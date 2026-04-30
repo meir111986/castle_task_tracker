@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_tracker/presentation/screens/calendar_screen.dart';
 import 'package:task_tracker/presentation/cubit/task_cubit.dart';
 import 'package:task_tracker/presentation/screens/add_task_screen.dart';
+import 'package:task_tracker/presentation/screens/edit_task_screen.dart';
+import 'package:task_tracker/presentation/screens/task_detail_screen.dart';
 
 Color getPriorityColor(String priority) {
   switch (priority) {
@@ -182,15 +184,46 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        trailing: Checkbox(
-                          value: task.isDone,
-                          onChanged: (_) {
-                            context.read<TaskCubit>().toggleTask(index);
-                          },
-                        ),
-                        onLongPress: () {
-                          context.read<TaskCubit>().deleteTask(index);
+                        // trailing: Checkbox(
+                        //   value: task.isDone,
+                        //   onChanged: (_) {
+                        //     context.read<TaskCubit>().toggleTask(task);
+                        //   },
+                        // ),
+                        // onLongPress: () {
+                        //   context.read<TaskCubit>().deleteTask(index);
+                        // },
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => TaskDetailScreen(task: task),
+                            ),
+                          );
                         },
+                        // trailing: Row(
+                        //   mainAxisSize: MainAxisSize.min,
+                        //   children: [
+                        //     Checkbox(
+                        //       value: task.isDone,
+                        //       onChanged: (_) {
+                        //         context.read<TaskCubit>().toggleTask(task);
+                        //       },
+                        //     ),
+                        //     IconButton(
+                        //       icon: const Icon(Icons.delete, color: Colors.red),
+                        //       onPressed: () {
+                        //         context.read<TaskCubit>().deleteTask(task);
+                        //       },
+                        //     ),
+                        //   ],
+                        // ),
+                        trailing: Icon(
+                          task.isDone
+                              ? Icons.check_circle
+                              : Icons.arrow_forward_ios,
+                          color: task.isDone ? Colors.green : Colors.grey,
+                        ),
                       ),
                     );
                   },

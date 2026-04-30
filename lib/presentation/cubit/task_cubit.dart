@@ -13,6 +13,19 @@ class TaskCubit extends Cubit<List<TaskModel>> {
 
   String searchQuery = "";
 
+  int getPriorityValue(String priority) {
+    switch (priority) {
+      case "High":
+        return 3;
+      case "Medium":
+        return 2;
+      case "Low":
+        return 1;
+      default:
+        return 0;
+    }
+  }
+
   void loadTasks() {
     var tasks = box.values.toList();
 
@@ -29,9 +42,36 @@ class TaskCubit extends Cubit<List<TaskModel>> {
     }
 
     if (sortType == "Priority") {
-      tasks.sort((a, b) => b.priority.compareTo(a.priority));
+      tasks.sort((a, b) {
+        // сначала невыполненные
+        if (a.isDone != b.isDone) {
+          return a.isDone ? 1 : -1;
+        }
+
+        // потом по приоритету
+        return getPriorityValue(
+          b.priority,
+        ).compareTo(getPriorityValue(a.priority));
+      });
     } else if (sortType == "Date") {
-      tasks.sort((a, b) => a.deadline.compareTo(b.deadline));
+      tasks.sort((a, b) {
+        // сначала невыполненные
+        if (a.isDone != b.isDone) {
+          return a.isDone ? 1 : -1;
+        }
+
+        // потом по дате
+        return a.deadline.compareTo(b.deadline);
+      });
+    } else {
+      tasks.sort((a, b) {
+        // даже без сортировки выполненные вниз
+        if (a.isDone != b.isDone) {
+          return a.isDone ? 1 : -1;
+        }
+
+        return 0;
+      });
     }
 
     emit(tasks);
@@ -41,6 +81,17 @@ class TaskCubit extends Cubit<List<TaskModel>> {
     box.add(task);
     loadTasks();
   }
+
+  void updateTask(TaskModel task) {
+    task.save();
+    loadTasks();
+  }
+
+  // void toggleTask(TaskModel task) {
+  //   task.isDone = !task.isDone;
+  //   task.save();
+  //   loadTasks();
+  // }
 
   void toggleTask(int index) {
     final task = box.getAt(index);
@@ -52,8 +103,14 @@ class TaskCubit extends Cubit<List<TaskModel>> {
     }
   }
 
-  void deleteTask(int index) {
-    box.deleteAt(index);
+  void completeTask(TaskModel task) {
+    task.isDone = true;
+    task.save();
+    loadTasks();
+  }
+
+  void deleteTask(TaskModel task) {
+    task.delete();
     loadTasks();
   }
 
