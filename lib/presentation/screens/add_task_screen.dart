@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_tracker/data/models/task_model.dart';
+import 'package:task_tracker/helpers/ui_helpers.dart';
 import 'package:task_tracker/notification_service.dart';
 import 'package:task_tracker/presentation/cubit/task_cubit.dart';
 
@@ -133,7 +134,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   ),
                 ),
                 items: ["Low", "Medium", "High"]
-                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(getPriorityValue(e)), // 👈 UI
+                      ),
+                    )
                     .toList(),
                 onChanged: (v) {
                   if (v != null) {
@@ -153,7 +159,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                   ),
                 ),
                 items: ["Work", "Personal"]
-                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(getCategory(e)),
+                      ),
+                    )
                     .toList(),
                 onChanged: (v) {
                   if (v != null) {

@@ -41,9 +41,9 @@ class TaskCubit extends Cubit<List<TaskModel>> {
         }
 
         // потом по приоритету
-        return getPriorityValue(
+        return getPriorityWeight(
           b.priority,
-        ).compareTo(getPriorityValue(a.priority));
+        ).compareTo(getPriorityWeight(a.priority));
       });
     } else if (sortType == "Date") {
       tasks.sort((a, b) {
@@ -84,16 +84,6 @@ class TaskCubit extends Cubit<List<TaskModel>> {
     task.save();
     loadTasks();
   }
-
-  // void toggleTask(int index) {
-  //   final task = box.getAt(index);
-
-  //   if (task != null) {
-  //     task.isDone = !task.isDone;
-  //     task.save();
-  //     loadTasks();
-  //   }
-  // }
 
   void completeTask(TaskModel task) {
     task.isDone = true;

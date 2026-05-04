@@ -35,21 +35,6 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     deadline = widget.task.deadline;
   }
 
-  // Future<void> pickDate() async {
-  //   final picked = await showDatePicker(
-  //     context: context,
-  //     initialDate: deadline,
-  //     firstDate: DateTime.now(),
-  //     lastDate: DateTime(2100),
-  //   );
-
-  //   if (picked != null) {
-  //     setState(() {
-  //       deadline = picked;
-  //     });
-  //   }
-  // }
-
   Future<void> pickDateTime() async {
     final pickedDate = await showDatePicker(
       context: context,

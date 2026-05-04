@@ -17,6 +17,8 @@ class _CalendarViewState extends State<CalendarView> {
   DateTime selectedDay = DateTime.now();
   DateTime focusedDay = DateTime.now();
 
+  CalendarFormat calendarFormat = CalendarFormat.month;
+
   List getTasksForDay(List tasks, DateTime day) {
     return tasks.where((task) {
       return task.deadline.year == day.year &&
@@ -39,6 +41,13 @@ class _CalendarViewState extends State<CalendarView> {
               focusedDay: focusedDay,
 
               selectedDayPredicate: (day) => isSameDay(selectedDay, day),
+
+              calendarFormat: calendarFormat,
+              onFormatChanged: (format) {
+                setState(() {
+                  calendarFormat = format;
+                });
+              },
 
               onDaySelected: (selected, focused) {
                 setState(() {

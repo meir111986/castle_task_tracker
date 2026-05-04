@@ -13,7 +13,20 @@ Color getPriorityColor(String priority) {
   }
 }
 
-int getPriorityValue(String priority) {
+String getPriorityValue(String priority) {
+  switch (priority) {
+    case "High":
+      return "Высокий";
+    case "Medium":
+      return "Средний";
+    case "Low":
+      return "Низкий";
+    default:
+      return priority;
+  }
+}
+
+int getPriorityWeight(String priority) {
   switch (priority) {
     case "High":
       return 3;
@@ -23,5 +36,31 @@ int getPriorityValue(String priority) {
       return 1;
     default:
       return 0;
+  }
+}
+
+String getCategory(String category) {
+  switch (category) {
+    case "All":
+      return "Все";
+    case "Work":
+      return "Работа";
+    case "Personal":
+      return "Личное";
+    default:
+      return category;
+  }
+}
+
+String getSort(String sort) {
+  switch (sort) {
+    case "None":
+      return "Без сортировки";
+    case "Priority":
+      return "По приоритету";
+    case "Date":
+      return "По дате";
+    default:
+      return sort;
   }
 }

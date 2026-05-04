@@ -18,19 +18,44 @@ class TaskStaticWidget extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 12),
               child: Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  // padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 8,
+                    horizontal: 36,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        "Выполнено: $done / $total",
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            "Выполнено: ",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            "$done ",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green,
+                            ),
+                          ),
+                          Text(
+                            "/ $total",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                       CircularProgressIndicator(
                         value: total == 0 ? 0 : done / total,
+                        strokeWidth: 8,
+                        color: Colors.green,
                       ),
                     ],
                   ),

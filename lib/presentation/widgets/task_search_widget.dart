@@ -20,7 +20,10 @@ class TaskSearchWidget extends StatelessWidget {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
+              contentPadding: EdgeInsets.symmetric(horizontal: 4),
             ),
+            style: TextStyle(fontSize: 14),
+
             onChanged: cubit.search,
           ),
         ),

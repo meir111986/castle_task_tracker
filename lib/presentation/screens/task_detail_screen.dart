@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_tracker/data/models/task_model.dart';
+import 'package:task_tracker/helpers/ui_helpers.dart';
 import 'package:task_tracker/presentation/cubit/task_cubit.dart';
 import 'package:task_tracker/presentation/screens/edit_task_screen.dart';
 
@@ -44,16 +45,17 @@ class TaskDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Детали задачи"),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.edit, color: Colors.lightGreen),
-            tooltip: "Изменить",
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => EditTaskScreen(task: task)),
-              );
-            },
-          ),
+          if (!task.isDone)
+            IconButton(
+              icon: const Icon(Icons.edit, color: Colors.lightGreen),
+              tooltip: "Изменить",
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => EditTaskScreen(task: task)),
+                );
+              },
+            ),
 
           IconButton(
             icon: const Icon(Icons.delete, color: Colors.red),
@@ -85,76 +87,37 @@ class TaskDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Card(
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(16),
-            //     child: Column(
-            //       crossAxisAlignment: CrossAxisAlignment.start,
-            //       children: [
-            //         Text(
-            //           task.title,
-            //           style: const TextStyle(
-            //             fontSize: 22,
-            //             fontWeight: FontWeight.bold,
-            //           ),
-            //         ),
-
-            //         const SizedBox(height: 12),
-
-            //         Text(
-            //           task.description.isEmpty
-            //               ? "Описание отсутствует"
-            //               : task.description,
-            //         ),
-
-            //         const Divider(height: 32),
-
-            //         Text("Приоритет: ${task.priority}"),
-            //         Text("Категория: ${task.category}"),
-            //         Text("Дедлайн: ${task.deadline.toString().split(' ')[0]}"),
-            //         Text(
-            //           "Статус: ${task.isDone ? 'Выполнена' : 'Не выполнена'}",
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
-            Hero(
-              tag: 'task_${task.key}',
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        task.title,
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
-                        ),
+            Card(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      task.title,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
                       ),
+                    ),
 
-                      const SizedBox(height: 12),
+                    const SizedBox(height: 12),
 
-                      Text(
-                        task.description.isEmpty
-                            ? "Описание отсутствует"
-                            : task.description,
-                      ),
+                    Text(
+                      task.description.isEmpty
+                          ? "Описание отсутствует"
+                          : task.description,
+                    ),
 
-                      const Divider(height: 32),
+                    const Divider(height: 32),
 
-                      Text("Приоритет: ${task.priority}"),
-                      Text("Категория: ${task.category}"),
-                      Text(
-                        "Дедлайн: ${task.deadline.toString().split('.')[0]}",
-                      ),
-                      Text(
-                        "Статус: ${task.isDone ? 'Выполнена' : 'Не выполнена'}",
-                      ),
-                    ],
-                  ),
+                    Text("Приоритет: ${getPriorityValue(task.priority)}"),
+                    Text("Категория: ${getCategory(task.category)}"),
+                    Text("Дедлайн: ${task.deadline.toString().split('.')[0]}"),
+                    Text(
+                      "Статус: ${task.isDone ? 'Выполнена' : 'Не выполнена'}",
+                    ),
+                  ],
                 ),
               ),
             ),

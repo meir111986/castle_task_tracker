@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task_tracker/helpers/ui_helpers.dart';
 import 'package:task_tracker/presentation/cubit/task_cubit.dart';
 
 class TaskFilterSortWidget extends StatelessWidget {
@@ -21,10 +22,17 @@ class TaskFilterSortWidget extends StatelessWidget {
                   value: cubit.selectedCategory,
                   decoration: const InputDecoration(
                     labelText: "Категория",
-                    border: OutlineInputBorder(),
+                    border: OutlineInputBorder(gapPadding: 0),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
                   ),
+                  style: TextStyle(fontSize: 14, color: Colors.black),
                   items: ["All", "Work", "Personal"]
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                      .map(
+                        (e) => DropdownMenuItem(
+                          value: e,
+                          child: Text(getCategory(e)), // 👈 UI
+                        ),
+                      )
                       .toList(),
                   onChanged: (value) {
                     if (value != null) {
@@ -40,9 +48,14 @@ class TaskFilterSortWidget extends StatelessWidget {
                   decoration: const InputDecoration(
                     labelText: "Сортировка",
                     border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
                   ),
+                  style: TextStyle(fontSize: 14, color: Colors.black),
                   items: ["None", "Priority", "Date"]
-                      .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                      .map(
+                        (e) =>
+                            DropdownMenuItem(value: e, child: Text(getSort(e))),
+                      )
                       .toList(),
                   onChanged: (value) {
                     if (value != null) {
