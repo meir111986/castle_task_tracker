@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:task_tracker/helpers/ui_helpers.dart';
 import 'package:task_tracker/presentation/cubit/task_cubit.dart';
+import 'package:task_tracker/presentation/screens/calendar_screen.dart';
 import 'package:task_tracker/presentation/screens/task_detail_screen.dart';
-import 'package:task_tracker/presentation/widgets/task_toolbar.dart';
+import 'package:task_tracker/presentation/widgets/task_card.dart';
+import 'package:task_tracker/presentation/widgets/task_filter_sort_widget.dart';
+import 'package:task_tracker/presentation/widgets/task_search_widget.dart';
+import 'package:task_tracker/presentation/widgets/task_static_widget.dart';
 
 class AllTasksScreen extends StatelessWidget {
   const AllTasksScreen({super.key});
@@ -11,11 +14,27 @@ class AllTasksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Все задачи")),
+      appBar: AppBar(
+        title: const Text("Все задачи"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.calendar_month),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => CalendarScreen()),
+              );
+            },
+          ),
+        ],
+      ),
 
       body: Column(
         children: [
-          const TaskToolbar(),
+          // const TaskToolbar(),
+          const TaskSearchWidget(),
+          const TaskFilterSortWidget(),
+          const TaskStaticWidget(),
 
           const SizedBox(height: 8),
 
@@ -32,55 +51,16 @@ class AllTasksScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final task = tasks[index];
 
-                    return Card(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: getPriorityColor(task.priority),
-                          child: Text(
-                            task.priority[0],
-                            style: const TextStyle(color: Colors.white),
+                    return TaskCard(
+                      task: task,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => TaskDetailScreen(task: task),
                           ),
-                        ),
-                        title: Text(
-                          task.title,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            decoration: task.isDone
-                                ? TextDecoration.lineThrough
-                                : null,
-                          ),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(task.category),
-                            Text(
-                              "${task.deadline.toLocal()}".split(' ')[0],
-                              style: const TextStyle(fontSize: 12),
-                            ),
-                          ],
-                        ),
-
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => TaskDetailScreen(task: task),
-                            ),
-                          );
-                        },
-
-                        trailing: Icon(
-                          task.isDone
-                              ? Icons.check_circle
-                              : Icons.arrow_forward_ios,
-                          color: task.isDone ? Colors.green : Colors.grey,
-                        ),
-                      ),
+                        );
+                      },
                     );
                   },
                 );

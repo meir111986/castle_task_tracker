@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:task_tracker/helpers/ui_helpers.dart';
+// import 'package:task_tracker/helpers/ui_helpers.dart';
 import 'package:task_tracker/presentation/screens/calendar_screen.dart';
 import 'package:task_tracker/presentation/cubit/task_cubit.dart';
 import 'package:task_tracker/presentation/screens/task_detail_screen.dart';
-import 'package:task_tracker/presentation/widgets/task_toolbar.dart';
+import 'package:task_tracker/presentation/widgets/task_card.dart';
+import 'package:task_tracker/presentation/widgets/task_filter_sort_widget.dart';
+import 'package:task_tracker/presentation/widgets/task_search_widget.dart';
+import 'package:task_tracker/presentation/widgets/task_static_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -13,7 +16,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Task Tracker"),
+        title: const Text("Активные задачи"),
         actions: [
           IconButton(
             icon: const Icon(Icons.calendar_month),
@@ -29,7 +32,10 @@ class HomeScreen extends StatelessWidget {
 
       body: Column(
         children: [
-          const TaskToolbar(),
+          // const TaskToolbar(),
+          const TaskSearchWidget(),
+          const TaskFilterSortWidget(),
+          const TaskStaticWidget(),
 
           const SizedBox(height: 8),
 
@@ -47,46 +53,16 @@ class HomeScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final task = activeTasks[index];
 
-                    return Card(
-                      margin: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: getPriorityColor(task.priority),
-                          child: Text(
-                            task.priority[0],
-                            style: const TextStyle(color: Colors.white),
+                    return TaskCard(
+                      task: task,
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => TaskDetailScreen(task: task),
                           ),
-                        ),
-                        title: Text(
-                          task.title,
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(task.category),
-                            Text(
-                              "${task.deadline.toLocal()}".split(' ')[0],
-                              style: const TextStyle(fontSize: 12),
-                            ),
-                          ],
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => TaskDetailScreen(task: task),
-                            ),
-                          );
-                        },
-                        trailing: const Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.grey,
-                        ),
-                      ),
+                        );
+                      },
                     );
                   },
                 );
@@ -95,16 +71,6 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-
-      // floatingActionButton: FloatingActionButton(
-      //   child: const Icon(Icons.add),
-      //   onPressed: () {
-      //     Navigator.push(
-      //       context,
-      //       MaterialPageRoute(builder: (_) => AddTaskScreen()),
-      //     );
-      //   },
-      // ),
     );
   }
 }

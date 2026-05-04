@@ -35,20 +35,20 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     deadline = widget.task.deadline;
   }
 
-  Future<void> pickDate() async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: deadline,
-      firstDate: DateTime.now(),
-      lastDate: DateTime(2100),
-    );
+  // Future<void> pickDate() async {
+  //   final picked = await showDatePicker(
+  //     context: context,
+  //     initialDate: deadline,
+  //     firstDate: DateTime.now(),
+  //     lastDate: DateTime(2100),
+  //   );
 
-    if (picked != null) {
-      setState(() {
-        deadline = picked;
-      });
-    }
-  }
+  //   if (picked != null) {
+  //     setState(() {
+  //       deadline = picked;
+  //     });
+  //   }
+  // }
 
   Future<void> pickDateTime() async {
     final pickedDate = await showDatePicker(
@@ -78,51 +78,9 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     });
   }
 
-  // Future<void> pickTime() async {
-  //   final pickedTime = await showTimePicker(
-  //     context: context,
-  //     initialTime: TimeOfDay.fromDateTime(deadline),
-  //   );
-
-  //   if (pickedTime != null) {
-  //     setState(() {
-  //       deadline = DateTime(
-  //         deadline.year,
-  //         deadline.month,
-  //         deadline.day,
-  //         pickedTime.hour,
-  //         pickedTime.minute,
-  //       );
-  //     });
-  //   }
-  // }
-
-  // void updateTask() {
-  //   if (!formKey.currentState!.validate()) return;
-
-  //   widget.task.title = titleController.text.trim();
-  //   widget.task.description = descController.text.trim();
-  //   widget.task.priority = priority;
-  //   widget.task.category = category;
-  //   widget.task.deadline = deadline;
-
-  //   context.read<TaskCubit>().updateTask(widget.task);
-
-  //   Navigator.pop(context);
-  //   Navigator.pop(context);
-
-  //   ScaffoldMessenger.of(
-  //     context,
-  //   ).showSnackBar(const SnackBar(content: Text("Задача изменена")));
-  // }
-
   Future<void> updateTask() async {
     if (!formKey.currentState!.validate()) return;
 
-    // отменяем старое уведомление
-    // if (widget.task.key != null) {
-    //   await NotificationService.cancelNotification(widget.task.key);
-    // }
     if (widget.task.key is int) {
       await NotificationService.cancelNotification(widget.task.key as int);
     }
@@ -237,17 +195,6 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
 
               const SizedBox(height: 16),
 
-              // Card(
-              //   child: ListTile(
-              //     leading: const Icon(Icons.calendar_today),
-              //     title: const Text("Дедлайн"),
-              //     subtitle: Text(deadline.toString().split(" ")[0]),
-              //     trailing: TextButton(
-              //       onPressed: pickDate,
-              //       child: const Text("Выбрать"),
-              //     ),
-              //   ),
-              // ),
               Card(
                 child: ListTile(
                   leading: const Icon(Icons.calendar_today),
@@ -260,12 +207,6 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
 
               const SizedBox(height: 12),
 
-              // ElevatedButton(
-              //   onPressed: pickTime,
-              //   child: Text(
-              //     "Выбрать время: ${deadline.hour.toString().padLeft(2, '0')}:${deadline.minute.toString().padLeft(2, '0')}",
-              //   ),
-              // ),
               const SizedBox(height: 24),
 
               ElevatedButton.icon(

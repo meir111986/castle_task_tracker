@@ -124,7 +124,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               const SizedBox(height: 20),
 
-              // 🔴 Приоритет
               DropdownButtonFormField<String>(
                 value: priority,
                 decoration: InputDecoration(
@@ -145,7 +144,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               const SizedBox(height: 16),
 
-              //  Категория
               DropdownButtonFormField<String>(
                 value: category,
                 decoration: InputDecoration(
@@ -166,32 +164,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               SizedBox(height: 20),
 
-              // ElevatedButton(
-              //   onPressed: () async {
-              //     final picked = await showDatePicker(
-              //       context: context,
-              //       initialDate: deadline,
-              //       firstDate: DateTime.now(),
-              //       lastDate: DateTime(2100),
-              //     );
-
-              //     if (picked != null) {
-              //       setState(() {
-              //         deadline = picked;
-              //       });
-              //     }
-              //   },
-              //   child: Text("Выбрать дедлайн"),
-              // ),
-
-              // const SizedBox(height: 12),
-
-              // ElevatedButton(
-              //   onPressed: pickTime,
-              //   child: Text(
-              //     "Выбрать время: ${deadline.hour.toString().padLeft(2, '0')}:${deadline.minute.toString().padLeft(2, '0')}",
-              //   ),
-              // ),
               Card(
                 child: ListTile(
                   leading: const Icon(Icons.calendar_today),

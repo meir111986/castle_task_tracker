@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_tracker/presentation/screens/add_task_screen.dart';
-import 'package:task_tracker/presentation/screens/calendar_screen.dart';
+// import 'package:task_tracker/presentation/screens/calendar_screen.dart';
 import 'package:task_tracker/presentation/screens/home_screen.dart';
 import 'package:task_tracker/presentation/screens/completed_screen.dart';
 import 'package:task_tracker/presentation/screens/all_tasks_screen.dart';
@@ -19,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
     const HomeScreen(), // активные
     const CompletedScreen(), // выполненные
     const AllTasksScreen(), // все
-    CalendarScreen(),
+    // CalendarScreen(),
   ];
 
   @override
