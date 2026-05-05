@@ -19,11 +19,12 @@ class TaskModelAdapter extends TypeAdapter<TaskModel> {
     return TaskModel(
       title: fields[0] as String,
       description: fields[1] as String,
-      priority: fields[2] as String,
+      priority: fields[2] as Priority,
       deadline: fields[3] as DateTime,
-      category: fields[4] as String,
+      category: fields[4] as Category,
       isDone: fields[5] as bool,
-    )..notificationId = fields[6] as int?;
+      notificationId: fields[6] as int?,
+    );
   }
 
   @override

@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:task_tracker/data/models/task_model.dart';
-import 'package:task_tracker/helpers/ui_helpers.dart';
+import 'package:task_tracker/domain/enums/category.dart';
+import 'package:task_tracker/domain/enums/priority_ext.dart';
+// import 'package:task_tracker/helpers/ui_helpers.dart';
 
 class TaskCubit extends Cubit<List<TaskModel>> {
   TaskCubit() : super([]) {
@@ -9,7 +11,7 @@ class TaskCubit extends Cubit<List<TaskModel>> {
   }
 
   final box = Hive.box<TaskModel>('tasks');
-  String selectedCategory = "All";
+  Category? selectedCategory;
   String sortType = "None";
 
   String searchQuery = "";
@@ -29,35 +31,28 @@ class TaskCubit extends Cubit<List<TaskModel>> {
           .toList();
     }
 
-    if (selectedCategory != "All") {
+    if (selectedCategory != null) {
       tasks = tasks.where((t) => t.category == selectedCategory).toList();
     }
 
     if (sortType == "Priority") {
       tasks.sort((a, b) {
-        // сначала невыполненные
         if (a.isDone != b.isDone) {
           return a.isDone ? 1 : -1;
         }
 
-        // потом по приоритету
-        return getPriorityWeight(
-          b.priority,
-        ).compareTo(getPriorityWeight(a.priority));
+        return b.priority.weight.compareTo(a.priority.weight);
       });
     } else if (sortType == "Date") {
       tasks.sort((a, b) {
-        // сначала невыполненные
         if (a.isDone != b.isDone) {
           return a.isDone ? 1 : -1;
         }
 
-        // потом по дате
         return a.deadline.compareTo(b.deadline);
       });
     } else {
       tasks.sort((a, b) {
-        // даже без сортировки выполненные вниз
         if (a.isDone != b.isDone) {
           return a.isDone ? 1 : -1;
         }
@@ -79,12 +74,6 @@ class TaskCubit extends Cubit<List<TaskModel>> {
     loadTasks();
   }
 
-  void toggleTask(TaskModel task) {
-    task.isDone = !task.isDone;
-    task.save();
-    loadTasks();
-  }
-
   void completeTask(TaskModel task) {
     task.isDone = true;
     task.save();
@@ -96,7 +85,7 @@ class TaskCubit extends Cubit<List<TaskModel>> {
     loadTasks();
   }
 
-  void setCategory(String category) {
+  void setCategory(Category? category) {
     selectedCategory = category;
     loadTasks();
   }

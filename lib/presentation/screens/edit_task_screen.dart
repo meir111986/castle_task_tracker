@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_tracker/data/models/task_model.dart';
+import 'package:task_tracker/domain/enums/category.dart';
+import 'package:task_tracker/domain/enums/category_ext.dart';
+import 'package:task_tracker/domain/enums/priority.dart';
+import 'package:task_tracker/domain/enums/priority_ext.dart';
 import 'package:task_tracker/notification_service.dart';
 import 'package:task_tracker/presentation/cubit/task_cubit.dart';
 
@@ -19,8 +23,8 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   late TextEditingController titleController;
   late TextEditingController descController;
 
-  late String priority;
-  late String category;
+  late Priority priority;
+  late Category category;
   late DateTime deadline;
 
   @override
@@ -140,40 +144,46 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
 
               const SizedBox(height: 16),
 
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<Priority>(
                 value: priority,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: "Приоритет",
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-                items: ["Low", "Medium", "High"]
-                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                items: Priority.values
+                    .map(
+                      (e) =>
+                          DropdownMenuItem(value: e, child: Text(e.priorityRu)),
+                    )
                     .toList(),
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() {
-                      priority = value;
-                    });
+                onChanged: (v) {
+                  if (v != null) {
+                    setState(() => priority = v);
                   }
                 },
               ),
 
               const SizedBox(height: 16),
 
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<Category>(
                 value: category,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: "Категория",
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
-                items: ["Work", "Personal"]
-                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
+                items: Category.values
+                    .map(
+                      (e) =>
+                          DropdownMenuItem(value: e, child: Text(e.categoryRu)),
+                    )
                     .toList(),
-                onChanged: (value) {
-                  if (value != null) {
-                    setState(() {
-                      category = value;
-                    });
+                onChanged: (v) {
+                  if (v != null) {
+                    setState(() => category = v);
                   }
                 },
               ),

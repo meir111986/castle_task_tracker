@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 // import 'package:task_tracker/helpers/ui_helpers.dart';
 import 'package:task_tracker/presentation/screens/calendar_screen.dart';
 import 'package:task_tracker/presentation/cubit/task_cubit.dart';
-import 'package:task_tracker/presentation/screens/task_detail_screen.dart';
+import 'package:task_tracker/presentation/screens/detail_task_screen.dart';
 import 'package:task_tracker/presentation/widgets/task_card.dart';
 import 'package:task_tracker/presentation/widgets/task_filter_sort_widget.dart';
 import 'package:task_tracker/presentation/widgets/task_search_widget.dart';

@@ -1,4 +1,7 @@
 import 'package:hive/hive.dart';
+import 'package:task_tracker/domain/entities/task_entity.dart';
+import 'package:task_tracker/domain/enums/category.dart';
+import 'package:task_tracker/domain/enums/priority.dart';
 
 part 'task_model.g.dart';
 
@@ -11,13 +14,13 @@ class TaskModel extends HiveObject {
   String description;
 
   @HiveField(2)
-  String priority;
+  Priority priority;
 
   @HiveField(3)
   DateTime deadline;
 
   @HiveField(4)
-  String category;
+  Category category;
 
   @HiveField(5)
   bool isDone;
@@ -32,5 +35,69 @@ class TaskModel extends HiveObject {
     required this.deadline,
     required this.category,
     this.isDone = false,
+    this.notificationId,
   });
+
+  TaskEntity toEntity() {
+    return TaskEntity(
+      title: title,
+      description: description,
+      priority: priority,
+      category: category,
+      deadline: deadline,
+      isDone: isDone,
+      notificationId: notificationId,
+    );
+  }
+
+  factory TaskModel.fromEntity(TaskEntity entity) {
+    return TaskModel(
+      title: entity.title,
+      description: entity.description,
+      priority: entity.priority,
+      category: entity.category,
+      deadline: entity.deadline,
+      isDone: entity.isDone,
+      notificationId: entity.notificationId,
+    );
+  }
+
+  String get priorityRu {
+    switch (priority) {
+      case Priority.high:
+        return "Высокий";
+      case Priority.medium:
+        return "Средний";
+      case Priority.low:
+        return "Низкий";
+    }
+  }
+
+  String get categoryRu {
+    switch (category) {
+      case Category.work:
+        return "Работа";
+      case Category.personal:
+        return "Личное";
+    }
+  }
+
+  int get priorityWeight {
+    switch (priority) {
+      case Priority.high:
+        return 3;
+      case Priority.medium:
+        return 2;
+      case Priority.low:
+        return 1;
+    }
+  }
+
+  String get formattedDate {
+    return "${deadline.day.toString().padLeft(2, '0')}."
+        "${deadline.month.toString().padLeft(2, '0')}."
+        "${deadline.year} "
+        "${deadline.hour.toString().padLeft(2, '0')}:"
+        "${deadline.minute.toString().padLeft(2, '0')}";
+  }
 }

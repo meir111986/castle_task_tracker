@@ -68,7 +68,6 @@ class TaskCard extends StatelessWidget {
       key: ValueKey(task.key),
       direction: DismissDirection.endToStart,
 
-      // 🔴 фон при свайпе
       background: Container(
         color: Colors.red,
         alignment: Alignment.centerRight,
@@ -99,7 +98,7 @@ class TaskCard extends StatelessWidget {
             height: 40,
             alignment: Alignment.center,
             child: Text(
-              task.priority[0],
+              task.priority.name[0].toUpperCase(),
               style: const TextStyle(color: Colors.white),
             ),
           ),
@@ -118,11 +117,12 @@ class TaskCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Text(task.category),
-              Text(getCategory(task.category)),
-              Text(
-                "${task.deadline.toLocal()}".split('.')[0],
-                style: const TextStyle(fontSize: 12),
-              ),
+              Text(task.categoryRu),
+              // Text(
+              //   "${task.deadline.toLocal()}".split('.')[0],
+              //   style: const TextStyle(fontSize: 12),
+              // ),
+              Text(task.formattedDate, style: const TextStyle(fontSize: 12)),
             ],
           ),
 

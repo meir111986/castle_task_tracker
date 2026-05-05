@@ -4,7 +4,7 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:task_tracker/data/models/task_model.dart';
 import 'package:task_tracker/helpers/ui_helpers.dart';
 import 'package:task_tracker/presentation/cubit/task_cubit.dart';
-import 'package:task_tracker/presentation/screens/task_detail_screen.dart';
+import 'package:task_tracker/presentation/screens/detail_task_screen.dart';
 
 class CalendarView extends StatefulWidget {
   const CalendarView({super.key});
@@ -101,13 +101,28 @@ class _CalendarViewState extends State<CalendarView> {
                           ),
                           child: ListTile(
                             leading: CircleAvatar(
-                              backgroundColor: getPriorityColor(task.priority),
+                              backgroundColor: task.isDone
+                                  ? Colors.grey
+                                  : getPriorityColor(task.priority),
                               child: Text(
-                                task.priority[0],
+                                task.priority
+                                    .toString()
+                                    .split('.')
+                                    .last[0]
+                                    .toUpperCase(),
                                 style: const TextStyle(color: Colors.white),
                               ),
                             ),
-                            title: Text(task.title),
+                            title: Text(
+                              task.title,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                decoration: task.isDone
+                                    ? TextDecoration.lineThrough
+                                    : null,
+                                color: task.isDone ? Colors.grey : Colors.black,
+                              ),
+                            ),
                             subtitle: Text(
                               "${task.deadline.hour.toString().padLeft(2, '0')}:${task.deadline.minute.toString().padLeft(2, '0')}",
                             ),

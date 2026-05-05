@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_tracker/data/models/task_model.dart';
-import 'package:task_tracker/helpers/ui_helpers.dart';
+import 'package:task_tracker/domain/enums/category.dart';
+import 'package:task_tracker/domain/enums/category_ext.dart';
+import 'package:task_tracker/domain/enums/priority.dart';
+import 'package:task_tracker/domain/enums/priority_ext.dart';
+// import 'package:task_tracker/helpers/ui_helpers.dart';
 import 'package:task_tracker/notification_service.dart';
 import 'package:task_tracker/presentation/cubit/task_cubit.dart';
 
@@ -14,8 +18,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   final titleController = TextEditingController();
   final descController = TextEditingController();
 
-  String priority = "Low";
-  String category = "Work";
+  Priority priority = Priority.low;
+  Category category = Category.work;
   DateTime deadline = DateTime.now();
 
   final formKey = GlobalKey<FormState>();
@@ -44,8 +48,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     );
 
     if (!mounted) return;
-
-    print(2);
 
     ScaffoldMessenger.of(
       context,
@@ -125,7 +127,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               const SizedBox(height: 20),
 
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<Priority>(
                 value: priority,
                 decoration: InputDecoration(
                   labelText: "Приоритет",
@@ -133,12 +135,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                items: ["Low", "Medium", "High"]
+                items: Priority.values
                     .map(
-                      (e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(getPriorityValue(e)), // 👈 UI
-                      ),
+                      (e) =>
+                          DropdownMenuItem(value: e, child: Text(e.priorityRu)),
                     )
                     .toList(),
                 onChanged: (v) {
@@ -150,7 +150,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               const SizedBox(height: 16),
 
-              DropdownButtonFormField<String>(
+              DropdownButtonFormField<Category>(
                 value: category,
                 decoration: InputDecoration(
                   labelText: "Категория",
@@ -158,12 +158,10 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                items: ["Work", "Personal"]
+                items: Category.values
                     .map(
-                      (e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(getCategory(e)),
-                      ),
+                      (e) =>
+                          DropdownMenuItem(value: e, child: Text(e.categoryRu)),
                     )
                     .toList(),
                 onChanged: (v) {

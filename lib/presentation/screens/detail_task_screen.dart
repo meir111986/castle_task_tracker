@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_tracker/data/models/task_model.dart';
-import 'package:task_tracker/helpers/ui_helpers.dart';
 import 'package:task_tracker/presentation/cubit/task_cubit.dart';
 import 'package:task_tracker/presentation/screens/edit_task_screen.dart';
 
@@ -111,9 +110,10 @@ class TaskDetailScreen extends StatelessWidget {
 
                     const Divider(height: 32),
 
-                    Text("Приоритет: ${getPriorityValue(task.priority)}"),
-                    Text("Категория: ${getCategory(task.category)}"),
-                    Text("Дедлайн: ${task.deadline.toString().split('.')[0]}"),
+                    Text("Приоритет: ${task.priorityRu}"),
+                    Text("Категория: ${task.categoryRu}"),
+                    // Text("Дедлайн: ${task.deadline.toString().split('.')[0]}"),
+                    Text("Дедлайн: ${task.formattedDate}"),
                     Text(
                       "Статус: ${task.isDone ? 'Выполнена' : 'Не выполнена'}",
                     ),

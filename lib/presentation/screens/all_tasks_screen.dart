@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:task_tracker/presentation/cubit/task_cubit.dart';
 import 'package:task_tracker/presentation/screens/calendar_screen.dart';
-import 'package:task_tracker/presentation/screens/task_detail_screen.dart';
+import 'package:task_tracker/presentation/screens/detail_task_screen.dart';
 import 'package:task_tracker/presentation/widgets/task_card.dart';
 import 'package:task_tracker/presentation/widgets/task_filter_sort_widget.dart';
 import 'package:task_tracker/presentation/widgets/task_search_widget.dart';
@@ -38,7 +38,6 @@ class AllTasksScreen extends StatelessWidget {
 
           const SizedBox(height: 8),
 
-          // 📋 Список
           Expanded(
             child: BlocBuilder<TaskCubit, List>(
               builder: (context, tasks) {
