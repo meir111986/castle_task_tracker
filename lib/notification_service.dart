@@ -47,12 +47,7 @@ class NotificationService {
     final now = DateTime.now();
     final delay = scheduledDate.difference(now);
 
-    print("NOW: $now");
-    print("SCHEDULED: $scheduledDate");
-    print("DELAY: ${delay.inSeconds} seconds");
-
     if (delay.isNegative) {
-      print("Дата уже прошла");
       return;
     }
 
@@ -60,8 +55,6 @@ class NotificationService {
     final safeDelay = delay.inSeconds < 1 ? const Duration(seconds: 1) : delay;
 
     Future.delayed(safeDelay, () async {
-      print("SHOW DELAYED NOTIFICATION");
-
       await notifications.show(
         id: id,
         title: title,
