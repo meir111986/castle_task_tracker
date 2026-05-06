@@ -187,7 +187,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
               ElevatedButton(
                 onPressed: () async {
-                  print("CLICK TEST");
+                  debugPrint("CLICK TEST");
 
                   await NotificationService.showNow();
                 },
