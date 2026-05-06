@@ -28,6 +28,9 @@ class TaskModel extends HiveObject {
   @HiveField(6)
   int? notificationId;
 
+  @HiveField(7)
+  DateTime createdAt;
+
   TaskModel({
     required this.title,
     required this.description,
@@ -36,7 +39,8 @@ class TaskModel extends HiveObject {
     required this.category,
     this.isDone = false,
     this.notificationId,
-  });
+    DateTime? createdAt,
+  }) : createdAt = createdAt ?? DateTime.now();
 
   TaskEntity toEntity() {
     return TaskEntity(
@@ -99,5 +103,13 @@ class TaskModel extends HiveObject {
         "${deadline.year} "
         "${deadline.hour.toString().padLeft(2, '0')}:"
         "${deadline.minute.toString().padLeft(2, '0')}";
+  }
+
+  String get createdAtFormatted {
+    return "${createdAt.day.toString().padLeft(2, '0')}."
+        "${createdAt.month.toString().padLeft(2, '0')}."
+        "${createdAt.year} "
+        "${createdAt.hour.toString().padLeft(2, '0')}:"
+        "${createdAt.minute.toString().padLeft(2, '0')}";
   }
 }

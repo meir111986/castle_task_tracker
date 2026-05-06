@@ -113,6 +113,10 @@ class TaskDetailScreen extends StatelessWidget {
                     Text("Приоритет: ${task.priorityRu}"),
                     Text("Категория: ${task.categoryRu}"),
                     // Text("Дедлайн: ${task.deadline.toString().split('.')[0]}"),
+                    Text(
+                      "Создано: ${task.createdAtFormatted}",
+                      style: const TextStyle(fontSize: 14, color: Colors.grey),
+                    ),
                     Text("Дедлайн: ${task.formattedDate}"),
                     Text(
                       "Статус: ${task.isDone ? 'Выполнена' : 'Не выполнена'}",
