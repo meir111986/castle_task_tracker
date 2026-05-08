@@ -51,7 +51,6 @@ class NotificationService {
       return;
     }
 
-    // защита от 0 секунд
     final safeDelay = delay.inSeconds < 1 ? const Duration(seconds: 1) : delay;
 
     Future.delayed(safeDelay, () async {
