@@ -16,7 +16,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.threads_clone"
+    namespace = "com.example.task_tracker"
     compileSdk = 36
     ndkVersion = "28.2.13676358" 
 
@@ -32,7 +32,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.example.threads_clone"
+        applicationId = "com.example.task_tracker"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -49,6 +49,9 @@ android {
     }
 
     buildTypes {
+        debug {
+        signingConfig = signingConfigs.getByName("debug")
+    }
         release {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = true

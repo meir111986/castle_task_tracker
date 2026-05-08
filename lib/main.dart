@@ -12,7 +12,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Hive.initFlutter();
-  await Hive.initFlutter();
 
   Hive.registerAdapter(PriorityAdapter());
   Hive.registerAdapter(CategoryAdapter());
